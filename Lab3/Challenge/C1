@@ -1,0 +1,4 @@
+#Test
+echo HI CPSC321! | ./Lab3
+cat allcaps.txt | ./Lab3
+./Lab3 allcaps.txt allLower.txt

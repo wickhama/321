@@ -1,0 +1,12 @@
+#####First test to see if you can redirect stdout from a program into your program.
+echo HI CPSC321! | ./Lab3 
+#### Next pipe your file output into the program.
+cat allcaps.txt | ./Lab3 
+####Redirect a file into stdin with the < operator
+./Lab3 <allcaps.txt
+####Use the command line argument to open the file directly
+./Lab3 -f allcaps.txt
+####Pipe the output of your program to grep and search for a string.
+./Lab3 -f allcaps.txt | grep cool
+####Search for something that isn't in the file
+./Lab3 -f allcaps.txt | grep COOL
