@@ -1,27 +1,49 @@
 /*
-	CPSC 321
+	CPSC 321, Lab 4 Assignment
 	October 6, 2015
 	Ayla Wickham 230111051
 */
 
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
+
+typedef enum { false, true} bool;
 
 int main(void) {
 
-	char cmmd[60];
-	char *dir = "/bin/";
+	char *args[60];
+	char str[60];
+	pid_t pid;
+	bool background;
+	int i;
 	
-	while(fgets(cmmd, 60, stdin) != NULL){
+	while(fgets(str, sizeof str, stdin) != NULL) {
+		background = false;
+		i=0;
+
+		args[i] = strtok(str," \t\r\n\f\v");
 	
-		pid_t pid = fork();
-		if(pid == 0) {
-			execv("/bin/", cmmd); Fix execv! /bin/ is the file in os that executes the command. cmmd is where you use options and args!
+		while(args[i] != NULL){
+			args[++i] = strtok(NULL, " \t\r\n\f\v");
 		}
-		else {
-			wait();
+	
+		if(strcmp(args[i-1], "&") == 0) {
+			background = true;
+			args[i-1] = NULL;
 		}
-	} puts("Hello");
+	
+		pid=fork();
+
+		if(pid==0) {
+			if(background) {setpgid(0, 0);}
+			execvp(args[0], args);
+			return 0;
+		}
+	}	
+
 	return 0;
 }
